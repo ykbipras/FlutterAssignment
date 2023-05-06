@@ -1,41 +1,53 @@
-// 10. Write a nested if-else statement that checks if a variable password is at least 8 characters long and contains at least one uppercase letter and one number.
-// If it does, print "Strong password".
-// If it is at least 8 characters long but does not contain an uppercase letter or a number, print "Weak password: add an uppercase letter and a number".
-// If it is less than 8 characters long, print "Password is too short".
+// # Dart: Validate Password
 
+// This code snippet shows how to validate a password
+// **Requirement** :
+// Password should be more than 8 characters long
+// It should contain
+// at least one Uppercase ( Capital ) letter
+// at least one lowercase character
+// at least digit and
+// special character.
 void main() {
-  String password = "ComplextPassword@123";
-  isPasswordCompliant(password);
+  var p = "ComplextPassword@123";
+  //will print True if password is complient else false
+  print(isPasswordCompliant(p));
 }
 
-bool isPasswordCompliant(password, [int minLength = 8]) {
-  if (password == null || password.isEmpty) {
-    return false;
-  }
-  bool hasUppercase = password.contains(new RegExp(r'[A-Z]'));
-  bool hasDigits = password.contains(new RegExp(r'[0-9]'));
-  bool hasLowercase = password.contains(new RegExp(r'[a-z]'));
-  bool hasSpecialCharacters =
-      password.contains(new RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
-  bool hasMinLength = password.length > minLength;
+// Password validation function
+bool isPasswordCompliant(String password) {
+  bool isComplient = false;
+  bool hasUppercase = false;
+  bool hasDigits = false;
+  bool hasLowercase = false;
+  bool hasSpecialCharacters = false;
+  var character = '';
+  var i = 0;
+  print(password);
+  if (!password.isEmpty) {
+    // Check if valid special characters are present
+    hasSpecialCharacters =
+        password.contains(new RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+    while (i < password.length) {
+      character = password.substring(i, i + 1);
+      print(character);
 
-  if (password.length <= 8) {
-    print("Password is too short");
-  } else if (password != hasUppercase) {
-    print("Password has not Uppercase");
-  } else if (password != hasDigits) {
-    print("Password has not digits");
-  } else if (password != hasLowercase) {
-    print("Password has not lowercase");
-  } else if (password != hasMinLength) {
-    print("Password has not Special Charactors");
-  } else if (password != hasDigits && hasUppercase) {
-    print("Print Weak password");
+      if (isDigit(character, 0)) {
+        hasDigits = true;
+      } else {
+        if (character == character.toUpperCase()) {
+          hasUppercase = true;
+        }
+        if (character == character.toLowerCase()) {
+          hasLowercase = true;
+        }
+      }
+      i++;
+    }
   }
-
-  return hasDigits &
-      hasUppercase &
-      hasLowercase &
-      hasSpecialCharacters &
-      hasMinLength;
+  isComplient = hasDigits & hasUppercase & hasLowercase & hasSpecialCharacters;
+  return isComplient;
 }
+
+bool isDigit(String s, int idx) =>
+    "0".compareTo(s[idx]) <= 0 && "9".compareTo(s[idx]) >= 0;
